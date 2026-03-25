@@ -99,3 +99,25 @@ def test_set_correct_choices_with_invalid_id():
     choice1 = question.add_choice('a', False)
     with pytest.raises(Exception):
         question.set_correct_choices(['b'])
+
+# --- Commit 3: Testing with fixtures ---
+
+@pytest.fixture
+def question():
+    return Question(title='q1')
+
+def test_add_choice_with_fixture(question):
+    choice = question.add_choice('a', False)
+    assert len(question.choices) == 1
+    assert choice.text == 'a'
+
+def test_remove_choice_with_fixture(question):
+    choice = question.add_choice('a', False)
+    question.remove_choice_by_id(choice.id)
+    assert len(question.choices) == 0
+
+def test_remove_all_choices_with_fixture(question):
+    question.add_choice('a', False)
+    question.add_choice('b', True)
+    question.remove_all_choices()
+    assert len(question.choices) == 0
